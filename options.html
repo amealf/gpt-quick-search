@@ -1,0 +1,1158 @@
+<!doctype html>
+<html data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <title>GPT quick search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════
+       Light theme (original palette)
+       ═══════════════════════════════════════ */
+    :root,
+    [data-theme="light"] {
+      --control-font-size: 13px;
+      --control-height: 36px;
+      --control-radius: 10px;
+
+      --bg-base: #ffffff;
+      --bg-surface: #ffffff;
+      --bg-surface-hover: #f3f4f6;
+      --bg-elevated: #ffffff;
+      --border-subtle: #e5e7eb;
+      --border-default: #d1d5db;
+      --text-primary: #111827;
+      --text-secondary: #374151;
+      --text-muted: #6b7280;
+      --accent: #111827;
+      --accent-dim: #111827;
+      --accent-glow: transparent;
+      --danger: #d07a7a;
+      --danger-dim: #fdf1f1;
+      --danger-border: #ebb1b1;
+      --danger-text: #8f4949;
+
+      --tooltip-bg: #111827;
+      --tooltip-text: #ffffff;
+      --tooltip-arrow: #111827;
+      --tooltip-shadow: rgba(17, 24, 39, 0.18);
+      --tooltip-border: transparent;
+
+      --tab-active-bg: #111827;
+      --tab-active-text: #ffffff;
+      --tab-active-border: #111827;
+      --tab-active-shadow: none;
+      --tab-hover-bg: #f3f4f6;
+
+      --primary-bg: #111827;
+      --primary-border: #111827;
+      --primary-text: #ffffff;
+      --primary-shadow: none;
+      --primary-hover-shadow: none;
+
+      --toggle-active-bg: #111827;
+      --toggle-active-border: #111827;
+      --toggle-active-text: #ffffff;
+
+      --select-option-bg: #ffffff;
+      --select-option-text: #111827;
+
+      --status-bg: #f9fafb;
+      --toolbar-bg: #fafafa;
+      --chip-bg: #f3f4f6;
+      --chip-text: #4b5563;
+
+      --scrollbar-thumb: rgba(0,0,0,0.15);
+      --scrollbar-thumb-hover: rgba(0,0,0,0.25);
+
+      --glow-display: none;
+
+      --icon-bg: #111827;
+      --h1-gradient-from: #111827;
+      --h1-gradient-to: #374151;
+
+      --help-hover-border: #d1d5db;
+      --toggle-hover-border: #9ca3af;
+      --btn-hover-border: #9ca3af;
+    }
+
+    /* ═══════════════════════════════════════
+       Dark theme
+       ═══════════════════════════════════════ */
+    [data-theme="dark"] {
+      --bg-base: #0f1117;
+      --bg-surface: rgba(255, 255, 255, 0.04);
+      --bg-surface-hover: rgba(255, 255, 255, 0.07);
+      --bg-elevated: rgba(255, 255, 255, 0.06);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-default: rgba(255, 255, 255, 0.12);
+      --text-primary: #e8eaed;
+      --text-secondary: #9aa0a6;
+      --text-muted: #6b7280;
+      --accent: #818cf8;
+      --accent-dim: rgba(129, 140, 248, 0.15);
+      --accent-glow: rgba(129, 140, 248, 0.25);
+      --danger: #f87171;
+      --danger-dim: rgba(248, 113, 113, 0.12);
+      --danger-border: rgba(248, 113, 113, 0.3);
+      --danger-text: #f87171;
+
+      --tooltip-bg: #1e2030;
+      --tooltip-text: #e8eaed;
+      --tooltip-arrow: #1e2030;
+      --tooltip-shadow: rgba(0, 0, 0, 0.4);
+      --tooltip-border: rgba(255, 255, 255, 0.08);
+
+      --tab-active-bg: rgba(129, 140, 248, 0.15);
+      --tab-active-text: #818cf8;
+      --tab-active-border: transparent;
+      --tab-active-shadow: 0 0 12px rgba(129, 140, 248, 0.25);
+      --tab-hover-bg: rgba(255, 255, 255, 0.07);
+
+      --primary-bg: linear-gradient(135deg, #818cf8, #a78bfa);
+      --primary-border: transparent;
+      --primary-text: #ffffff;
+      --primary-shadow: 0 0 16px rgba(129, 140, 248, 0.25);
+      --primary-hover-shadow: 0 0 24px rgba(129, 140, 248, 0.4);
+
+      --toggle-active-bg: rgba(129, 140, 248, 0.15);
+      --toggle-active-border: #818cf8;
+      --toggle-active-text: #818cf8;
+
+      --select-option-bg: #1a1c2a;
+      --select-option-text: #e8eaed;
+
+      --status-bg: rgba(255, 255, 255, 0.06);
+      --toolbar-bg: rgba(255, 255, 255, 0.06);
+      --chip-bg: rgba(255, 255, 255, 0.06);
+      --chip-text: #9aa0a6;
+
+      --scrollbar-thumb: rgba(255,255,255,0.12);
+      --scrollbar-thumb-hover: rgba(255,255,255,0.2);
+
+      --glow-display: block;
+
+      --icon-bg: linear-gradient(135deg, #818cf8, #a78bfa);
+      --h1-gradient-from: #e8eaed;
+      --h1-gradient-to: #9aa0a6;
+
+      --help-hover-border: rgba(255,255,255,0.18);
+      --toggle-hover-border: rgba(255,255,255,0.18);
+      --btn-hover-border: rgba(255,255,255,0.18);
+    }
+
+    /* ═══════════════════════════════════════
+       Base
+       ═══════════════════════════════════════ */
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-size: 14px;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 24px;
+      line-height: 1.5;
+      color: var(--text-primary);
+      background: var(--bg-base);
+      -webkit-font-smoothing: antialiased;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-thumb-hover); }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ─── top glow (dark only) ─── */
+    body::before {
+      content: '';
+      display: var(--glow-display);
+      position: fixed;
+      top: -120px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 240px;
+      background: radial-gradient(ellipse, var(--accent-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    /* ═══════════════════════════════════════
+       Header
+       ═══════════════════════════════════════ */
+    .page-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .page-header-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--icon-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    [data-theme="dark"] .page-header-icon {
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+
+    .page-header h1 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, var(--h1-gradient-from), var(--h1-gradient-to));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ─── theme toggle ─── */
+    .theme-toggle {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      padding: 0;
+      min-height: unset;
+      transition: all 0.25s ease;
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--btn-hover-border);
+      color: var(--text-primary);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .theme-toggle:active {
+      transform: translateY(-50%) scale(0.95);
+    }
+
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+      display: none;
+      line-height: 1;
+    }
+
+    [data-theme="light"] .theme-toggle .icon-moon { display: block; }
+    [data-theme="dark"]  .theme-toggle .icon-sun  { display: block; }
+
+    /* ═══════════════════════════════════════
+       Tabs
+       ═══════════════════════════════════════ */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      width: calc(100% - 72px);
+      max-width: 980px;
+      margin: 0 auto 20px;
+      background: var(--bg-surface);
+      border: 2px solid var(--border-default);
+      border-radius: 14px;
+      padding: 6px;
+      box-shadow: inset 0 0 0 1px var(--bg-elevated);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .tab-button {
+      flex: 0 1 280px;
+      border: 2px solid transparent;
+      border-radius: 11px;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      min-height: var(--control-height);
+      padding: 0 16px;
+      font-size: var(--control-font-size);
+      font-weight: 500;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+
+    .tab-button:hover {
+      border-color: var(--border-default);
+      color: var(--text-primary);
+      background: var(--tab-hover-bg);
+    }
+
+    .tab-button.is-active {
+      background: var(--tab-active-bg);
+      border-color: var(--tab-active-border);
+      color: var(--tab-active-text);
+      box-shadow: var(--tab-active-shadow);
+    }
+
+    /* ═══════════════════════════════════════
+       Page sections
+       ═══════════════════════════════════════ */
+    .page {
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .page.is-active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    #page-batch {
+      width: 980px;
+      margin: 0 auto;
+    }
+
+    #page-export {
+      width: 980px;
+      margin: 0 auto;
+    }
+
+    /* ═══════════════════════════════════════
+       Group (panel)
+       ═══════════════════════════════════════ */
+    .group {
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: var(--bg-surface);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    [data-theme="dark"] .group {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* ═══════════════════════════════════════
+       Row
+       ═══════════════════════════════════════ */
+    .row { margin-bottom: 10px; }
+    .row:last-child { margin-bottom: 0; }
+
+    /* ═══════════════════════════════════════
+       Labels
+       ═══════════════════════════════════════ */
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 6px;
+      color: var(--text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    /* ═══════════════════════════════════════
+       Textarea
+       ═══════════════════════════════════════ */
+    textarea {
+      width: 100%;
+      min-height: 72px;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      font: inherit;
+      font-size: 13px;
+      resize: vertical;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    }
+
+    textarea::placeholder { color: var(--text-muted); }
+
+    textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      outline: none;
+    }
+
+    /* ═══════════════════════════════════════
+       Number input
+       ═══════════════════════════════════════ */
+    input[type="number"] {
+      width: 180px;
+      box-sizing: border-box;
+      padding: 10px 12px;
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      font: inherit;
+      font-size: 13px;
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+      outline: none;
+    }
+
+    textarea.large { min-height: 460px; }
+    .hotkey-prompt { min-height: 148px; }
+    .batch-global-prompt { min-height: 108px; }
+    .batch-prompt { min-height: 98px; }
+
+    /* ═══════════════════════════════════════
+       Batch layout
+       ═══════════════════════════════════════ */
+    .batch-workspace {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .batch-grid {
+      display: grid;
+      grid-template-columns: 411px 525px;
+      gap: 16px;
+      align-items: stretch;
+      height: 608px;
+    }
+
+    .batch-column {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .batch-column-prompts .batch-panel,
+    .batch-column-inputs .batch-panel {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 0;
+    }
+
+    .batch-grid .row { margin-bottom: 0; }
+
+    .batch-column-prompts textarea,
+    .batch-column-inputs textarea.large {
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       Inline / actions
+       ═══════════════════════════════════════ */
+    .inline {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .export-actions .toolbar-group-directory {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .toggle-label {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+
+    .option-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .option-box {
+      display: inline-flex;
+      align-items: center;
+      padding: 10px 12px;
+      border: 1px solid var(--border-default);
+      border-radius: 10px;
+      background: var(--bg-elevated);
+    }
+
+    .guide-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 16px 18px;
+      border: 1px solid var(--border-default);
+      border-radius: 14px;
+      background: var(--bg-surface);
+      margin-bottom: 16px;
+    }
+
+    .guide-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .guide-card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .guide-card-body {
+      display: grid;
+      grid-template-columns: minmax(260px, 1.2fr) minmax(240px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .guide-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--text-secondary);
+      font-size: var(--control-font-size);
+      line-height: 1.75;
+    }
+
+    .guide-side {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .guide-note {
+      padding: 10px 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      background: var(--toolbar-bg);
+      color: var(--text-secondary);
+      font-size: var(--control-font-size);
+      line-height: 1.6;
+    }
+
+    .guide-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .secondary-button {
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+    }
+
+    .secondary-button:hover {
+      border-color: var(--btn-hover-border);
+      background: var(--bg-surface-hover);
+    }
+
+    .preset-meta {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 0 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border-default);
+      background: var(--chip-bg);
+      color: var(--chip-text);
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    /* ═══════════════════════════════════════
+       Batch meta
+       ═══════════════════════════════════════ */
+    .batch-meta {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .meta-item { min-width: 0; }
+    .meta-item.small { flex: 0 0 220px; }
+    .meta-item.grow { flex: 1 1 420px; }
+
+    /* ═══════════════════════════════════════
+       Hint
+       ═══════════════════════════════════════ */
+    .hint {
+      color: var(--text-muted);
+      font-size: var(--control-font-size);
+    }
+
+    .hint.required-hint {
+      color: var(--danger);
+    }
+
+    /* ═══════════════════════════════════════
+       Panel head
+       ═══════════════════════════════════════ */
+    .batch-panel {
+      margin-bottom: 0;
+      min-width: 0;
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .panel-head label { margin-bottom: 0; }
+
+    .panel-tools {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    /* ═══════════════════════════════════════
+       Help button / icon button
+       ═══════════════════════════════════════ */
+    .help-button,
+    .icon-button {
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      font-size: 12px;
+      line-height: 1;
+      border: 1px solid var(--border-default);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      min-height: unset;
+    }
+
+    .help-button:hover,
+    .icon-button:hover {
+      background: var(--bg-surface-hover);
+      color: var(--text-primary);
+      border-color: var(--help-hover-border);
+    }
+
+    .help-button {
+      position: relative;
+      font-weight: 600;
+    }
+
+    .help-button::before,
+    .help-button::after {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.16s ease;
+    }
+
+    .help-button::before {
+      content: "";
+      left: 50%;
+      bottom: calc(100% + 4px);
+      transform: translateX(-50%);
+      border-width: 6px;
+      border-style: solid;
+      border-color: var(--tooltip-arrow) transparent transparent transparent;
+    }
+
+    .help-button::after {
+      content: attr(data-tip);
+      left: 50%;
+      bottom: calc(100% + 10px);
+      transform: translateX(-50%);
+      width: max-content;
+      max-width: 260px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: var(--tooltip-bg);
+      color: var(--tooltip-text);
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 1.45;
+      text-align: left;
+      white-space: normal;
+      box-shadow: 0 10px 30px var(--tooltip-shadow);
+      z-index: 20;
+      border: 1px solid var(--tooltip-border);
+    }
+
+    .help-button:hover::before,
+    .help-button:hover::after,
+    .help-button:focus-visible::before,
+    .help-button:focus-visible::after {
+      opacity: 1;
+    }
+
+    /* ═══════════════════════════════════════
+       Toolbar
+       ═══════════════════════════════════════ */
+    .batch-toolbar {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .toolbar-group {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+      min-width: 0;
+      min-height: var(--control-height);
+      padding: 6px 10px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--control-radius);
+      background: var(--toolbar-bg);
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .toolbar-label {
+      color: var(--text-secondary);
+      font-size: var(--control-font-size);
+      white-space: nowrap;
+    }
+
+    .compact-select,
+    input.compact-number {
+      font: inherit;
+      font-size: var(--control-font-size);
+      border: 1px solid var(--border-default);
+      border-radius: var(--control-radius);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      box-sizing: border-box;
+      min-height: var(--control-height);
+      transition: border-color 0.15s ease, background 0.3s ease;
+    }
+
+    .compact-select:focus,
+    input.compact-number:focus {
+      border-color: var(--accent);
+      outline: none;
+    }
+
+    .compact-select {
+      min-width: 118px;
+      padding: 0 28px 0 10px;
+    }
+
+    .compact-select option {
+      background: var(--select-option-bg);
+      color: var(--select-option-text);
+    }
+
+    input.compact-number {
+      width: 64px;
+      min-width: 64px;
+      padding: 0 10px;
+      text-align: center;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+
+    .compact-number::-webkit-outer-spin-button,
+    .compact-number::-webkit-inner-spin-button {
+      margin: 0;
+      -webkit-appearance: none;
+    }
+
+    .toolbar-unit {
+      color: var(--text-muted);
+      font-size: var(--control-font-size);
+    }
+
+    /* ═══════════════════════════════════════
+       Mini toggle
+       ═══════════════════════════════════════ */
+    .mini-toggle {
+      min-height: var(--control-height);
+      padding: 0 10px;
+      border-radius: var(--control-radius);
+      font-size: var(--control-font-size);
+      background: var(--bg-base);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-default);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .mini-toggle:hover {
+      border-color: var(--toggle-hover-border);
+      color: var(--text-primary);
+    }
+
+    .mini-toggle.is-active {
+      background: var(--toggle-active-bg);
+      border-color: var(--toggle-active-border);
+      color: var(--toggle-active-text);
+    }
+
+    /* ═══════════════════════════════════════
+       Directory
+       ═══════════════════════════════════════ */
+    .toolbar-group-directory {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .directory-button.is-required {
+      background: var(--danger-dim);
+      border-color: var(--danger-border);
+      color: var(--danger-text);
+    }
+
+    .directory-chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: var(--control-height);
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: var(--control-font-size);
+      background: var(--chip-bg);
+      color: var(--chip-text);
+      white-space: normal;
+      word-break: break-all;
+    }
+
+    .toolbar-spacer {
+      flex: 1 1 0;
+    }
+
+    /* ═══════════════════════════════════════
+       Buttons
+       ═══════════════════════════════════════ */
+    button {
+      min-height: var(--control-height);
+      padding: 0 14px;
+      border: 1px solid var(--border-default);
+      border-radius: var(--control-radius);
+      background: var(--bg-elevated);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font: inherit;
+      font-size: var(--control-font-size);
+      font-weight: 500;
+      transition: all 0.15s ease;
+    }
+
+    button:hover {
+      background: var(--bg-surface-hover);
+      border-color: var(--btn-hover-border);
+      color: var(--text-primary);
+    }
+
+    button.primary {
+      background: var(--primary-bg);
+      border-color: var(--primary-border);
+      color: var(--primary-text);
+      font-weight: 600;
+      box-shadow: var(--primary-shadow);
+    }
+
+    button.primary:hover {
+      box-shadow: var(--primary-hover-shadow);
+      filter: brightness(1.1);
+    }
+
+    button.primary:active {
+      filter: brightness(0.95);
+    }
+
+    /* ═══════════════════════════════════════
+       Status box
+       ═══════════════════════════════════════ */
+    .status-box {
+      min-height: 120px;
+      padding: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      background: var(--status-bg);
+      white-space: pre-wrap;
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-family: 'SF Mono', 'Cascadia Code', 'Consolas', monospace;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    .failure-group {
+      margin-top: 12px;
+    }
+
+    .failure-title {
+      margin-bottom: 8px;
+      color: var(--danger-text);
+      font-weight: 700;
+    }
+
+    .failure-box {
+      border-color: var(--danger-border);
+      background: var(--danger-dim);
+      color: var(--danger-text);
+      min-height: 120px;
+    }
+
+    .log-list {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+      max-height: 280px;
+      overflow-y: auto;
+    }
+
+    .log-item {
+      padding: 8px 0;
+      border-top: 1px solid var(--border-subtle);
+      font-size: var(--control-font-size);
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--text-secondary);
+    }
+
+    /* ═══════════════════════════════════════
+       Misc
+       ═══════════════════════════════════════ */
+    .group > .row > strong {
+      color: var(--text-primary);
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+
+    p.hint {
+      color: var(--text-muted);
+      margin-top: 12px;
+      line-height: 1.6;
+    }
+
+    input[type="checkbox"] {
+      accent-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <div class="page-header-icon">G</div>
+    <h1>GPT Quick Search</h1>
+    <button type="button" class="theme-toggle" id="themeToggle" title="切换日间/夜间模式">
+      <span class="icon-sun">&#9728;</span>
+      <span class="icon-moon">&#9790;</span>
+    </button>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="设置页面">
+    <button type="button" class="tab-button is-active" data-page="batch">批量消息</button>
+    <button type="button" class="tab-button" data-page="export">对话导出</button>
+    <button type="button" class="tab-button" data-page="hotkeys">快捷消息</button>
+  </div>
+
+  <section id="page-batch" class="page is-active">
+    <div class="group batch-workspace">
+      <div class="batch-grid">
+        <div class="batch-column batch-column-prompts">
+          <div class="row batch-panel">
+            <div class="panel-head">
+              <label for="batchGlobalPrompt">全局 Prompt</label>
+              <div class="panel-tools">
+                <button type="button" class="help-button" data-tip="每次批量任务开始时会先发送一次这一段，然后再逐条处理下面的文本。">?</button>
+              </div>
+            </div>
+            <textarea id="batchGlobalPrompt" class="batch-global-prompt"></textarea>
+          </div>
+
+          <div class="row batch-panel">
+            <div class="panel-head">
+              <label for="batchPrompt">消息 Prompt</label>
+              <div class="panel-tools">
+                <button type="button" class="help-button" data-tip="每条文本都会附在这个消息 Prompt 后面发送。">?</button>
+              </div>
+            </div>
+            <textarea id="batchPrompt" class="batch-prompt" placeholder="请介绍："></textarea>
+          </div>
+        </div>
+
+        <div class="batch-column batch-column-inputs">
+          <div class="row batch-panel">
+            <div class="panel-head">
+              <label for="batchInputs">待处理文本</label>
+              <div class="panel-tools">
+                <button type="button" class="help-button" data-tip="每行一条文本。带 ◆ 的行会发送给 GPT；不带 ◆ 的行会作为目录层级，保存时自动创建对应文件夹。例：1. 1903–1919 Moore and Early Analytic Ethics（1903–1919 摩尔与早期分析伦理学）&#10;├── 1_1 Context and Political Shocks（背景与政治冲击）&#10;│   ├── 1_1 ◆ Principia Ethica and the Break with British Idealism（《伦理学原理》与对英国观念论的决裂）&#10;│   ├── 1_1 ◆ Open Question Argument and Naturalistic Fallacy（开放问题论证与自然主义谬误）">?</button>
+                <button id="batchClearInputs" type="button" class="icon-button" aria-label="清除待处理文本" title="清除待处理文本">x</button>
+              </div>
+            </div>
+            <textarea id="batchInputs" class="large" placeholder="每行一条文本"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="batch-toolbar">
+        <div class="toolbar-row">
+          <div class="toolbar-group">
+            <span class="toolbar-label">任务模式</span>
+            <select id="batchConversationMode" class="compact-select" title="选择任务开始时是新建对话，还是沿用当前窗口。">
+              <option value="new">新建对话</option>
+              <option value="current">当前窗口</option>
+            </select>
+          </div>
+
+          <div class="toolbar-group">
+            <span class="toolbar-label">忽略</span>
+            <button id="batchIgnoreHeading1" type="button" class="mini-toggle" aria-pressed="false" title="跳过以 # 开头的一级标题。">一级标题</button>
+            <button id="batchIgnoreHeading2" type="button" class="mini-toggle" aria-pressed="true" title="跳过以 ## 开头的二级标题。">二级标题</button>
+          </div>
+
+          <div class="toolbar-group">
+            <label class="toolbar-label" for="batchDelaySeconds">等待</label>
+            <input id="batchDelaySeconds" class="compact-number" type="number" min="0" max="60" step="0.5" title="每条文本之间的等待时长。">
+            <span class="toolbar-unit">秒</span>
+          </div>
+        </div>
+
+        <div class="toolbar-row">
+          <div class="toolbar-group toolbar-group-directory">
+            <span class="toolbar-label">保存目录</span>
+            <button id="pickBatchDirectory" type="button" class="directory-button is-required" title="导出的 Markdown 文件会保存到这里。">选择目录</button>
+            <span id="batchDirectoryText" class="directory-chip required-hint">必选</span>
+          </div>
+          <div class="toolbar-spacer"></div>
+          <button id="batchStart" class="primary">开始</button>
+          <button id="batchStop" type="button">停止</button>
+          <span id="batchSaved" class="hint" style="display: none;">已保存</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="row"><strong>运行状态</strong></div>
+      <div id="batchSummary" class="hint">当前没有批量任务。</div>
+      <div id="batchStatus" class="status-box">等待任务开始。</div>
+      <div id="batchFailureGroup" class="failure-group" hidden>
+        <div class="failure-title">保存失败</div>
+        <div id="batchFailureBox" class="status-box failure-box"></div>
+      </div>
+      <div id="batchRetryGroup" class="failure-group" hidden>
+        <div class="failure-title">再次发送</div>
+        <div id="batchRetryBox" class="status-box failure-box"></div>
+      </div>
+      <ul id="batchLogs" class="log-list"></ul>
+    </div>
+  </section>
+
+  <section id="page-hotkeys" class="page">
+    <div class="guide-card">
+      <div class="guide-card-head">
+        <div class="guide-card-title">快捷消息使用说明</div>
+        <div class="guide-actions">
+          <button id="openShortcutSettings" type="button" class="secondary-button">打开快捷键设置</button>
+          <button id="save" class="primary">保存快捷消息设置</button>
+          <span id="saved" class="hint" style="display: none;">已保存</span>
+        </div>
+      </div>
+
+      <div class="guide-card-body">
+        <ol class="guide-list">
+          <li>先给四个预设分别写好消息 Prompt，并决定是否自动发送、是否新建会话。</li>
+          <li>点「保存快捷消息设置」，再点「打开快捷键设置」进入 Chrome 的快捷键页面。</li>
+          <li>给四个命令设置按键后，回到任意网页选中文本，按对应快捷键就会发送到 ChatGPT。</li>
+        </ol>
+
+        <div class="guide-side">
+          <div class="guide-note">推荐流程：修改 Prompt 后先保存，再设置快捷键。设置完成以后，不需要一直停留在这个页面。</div>
+          <div class="guide-note">四个预设彼此独立。下面的两个勾选决定的是：是否自动发送、是否打开新会话。</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="groups"></div>
+  </section>
+
+  <section id="page-export" class="page">
+    <div class="group">
+      <div class="row"><strong>当前对话导出</strong></div>
+      <p class="hint">读取当前已打开的 ChatGPT 对话页面，从第一条到最后一条问答逐条导出。每个 md 文件沿用批量处理的保存格式，标题使用用户问题，正文使用 GPT 回答。</p>
+      <div class="actions export-actions">
+        <div class="toolbar-group toolbar-group-directory">
+          <span class="toolbar-label">保存目录</span>
+          <button id="pickExportDirectory" type="button" class="directory-button is-required" title="导出的 Markdown 文件会保存到这里。">选择目录</button>
+          <span id="exportDirectoryText" class="directory-chip required-hint">必选</span>
+        </div>
+        <button id="exportCurrentChat" type="button" class="primary">导出当前对话</button>
+        <button id="exportStop" type="button">停止（重置）</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="row"><strong>运行状态</strong></div>
+      <div id="exportSummary" class="hint">当前没有导出任务。</div>
+      <div id="exportStatus" class="status-box">等待任务开始。</div>
+      <ul id="exportLogs" class="log-list"></ul>
+    </div>
+  </section>
+
+  <script src="theme.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

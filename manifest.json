@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "GPT Quick Search",
+  "version": "1.1.1",
+  "description": "快捷消息、批量消息和对话导出工具。",
+  "permissions": ["storage", "scripting", "tabs"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://gemini.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://gemini.google.com/*"
+      ],
+      "js": ["chatgpt_content.js"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+  "options_page": "options.html",
+  "action": {
+    "default_title": "GPT Quick Search"
+  },
+  "commands": {
+    "send_to_gpt_1": {
+      "suggested_key": { "default": "Alt+Shift+W" },
+      "description": "发送选中文本到 ChatGPT（预设1）"
+    },
+    "send_to_gpt_2": {
+      "suggested_key": { "default": "Ctrl+Shift+1" },
+      "description": "发送选中文本到 ChatGPT（预设2）"
+    },
+    "send_to_gpt_3": {
+      "suggested_key": { "default": "Ctrl+Shift+2" },
+      "description": "发送选中文本到 ChatGPT（预设3）"
+    },
+    "send_to_gpt_4": {
+      "suggested_key": { "default": "Ctrl+Shift+3" },
+      "description": "发送选中文本到 ChatGPT（预设4）"
+    }
+  }
+}
